@@ -127,7 +127,7 @@ export default function Mint() {
   });
 
   return (
-    <Card className="max-w-sm bg-white/10 backdrop-blur-sm">
+    <Card className="w-full max-w-sm bg-white/10 backdrop-blur-sm">
       <CardHeader>
         <CardTitle>Mint NFT</CardTitle>
       </CardHeader>
