@@ -6,6 +6,10 @@ import type { Metadata } from "next";
 import { cookieToInitialState } from "wagmi";
 import { config } from "~/config/web3";
 import { headers } from "next/headers";
+import banner from "~/media/ktools.png";
+import Header from "~/components/header";
+import { Toaster } from "~/components/ui/toaster";
+import { BackgroundBeams } from "~/components/background-beams";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,7 +19,35 @@ const inter = Inter({
 export const metadata = {
   title: siteMetadata.name,
   description: siteMetadata.description,
-  icons: [{ rel: "icon", url: siteMetadata.icon }],
+  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  openGraph: {
+    url: siteMetadata.url,
+    type: "website",
+    images: {
+      url: banner.src,
+      type: "image/png",
+      width: banner.width,
+      height: banner.height,
+      alt: siteMetadata.name,
+    },
+    siteName: siteMetadata.name,
+    title: siteMetadata.name,
+    description: siteMetadata.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@kinsyudev",
+    description: siteMetadata.description,
+    title: siteMetadata.name,
+    images: {
+      url: banner.src,
+      alt: siteMetadata.name,
+      width: banner.width,
+      height: banner.height,
+    },
+    site: siteMetadata.url,
+  },
+  creator: "@kinsyudev",
 } satisfies Metadata;
 
 export default function RootLayout({
@@ -26,7 +58,14 @@ export default function RootLayout({
   const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>{children}</body>
+      <body className={`font-sans ${inter.variable}`}>
+        <div className="z-10 grid min-h-screen grid-cols-1 grid-rows-[auto_1fr] items-center justify-start gap-4 px-4 py-8 text-black">
+          <Header />
+          {children}
+        </div>
+        <BackgroundBeams />
+        <Toaster />
+      </body>
     </html>
   );
 }
