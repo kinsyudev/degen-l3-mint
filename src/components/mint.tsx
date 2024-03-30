@@ -2,12 +2,14 @@
 
 import { Copy, ExternalLink } from "lucide-react";
 import { useCallback, useEffect, useMemo } from "react";
+import { erc721Abi } from "viem";
 import {
   type BaseError,
   useAccount,
   useWaitForTransactionReceipt,
   useWriteContract,
   useBalance,
+  useReadContract,
 } from "wagmi";
 import { Button } from "~/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "~/components/ui/card";
@@ -114,25 +116,35 @@ export default function Mint() {
     }
   }, [hash, isConfirming, status]);
 
+  const read = useReadContract({
+    abi: erc721Abi,
+    address: nftAddress,
+    functionName: "balanceOf",
+    args: [address!],
+    query: {
+      enabled: !!address,
+    },
+  });
 
   return (
-    <Card className="bg-white/10 backdrop-blur-sm max-w-sm">
+    <Card className="max-w-sm bg-white/10 backdrop-blur-sm">
       <CardHeader>
         <CardTitle>Mint NFT</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        Mint the first NFT in Degen Chain!
+        <p>Mint the first NFT in Degen Chain!</p>
+        <p>Your current balance: {read.data?.toString() ?? 0}</p>
+
         <Button
-          disabled={isPending || !hasEnoughBalance}
+          disabled={isPending || !hasEnoughBalance || !address}
           onClick={handleMint}
           className={cn("w-full")}
         >
           {isPending ? "Confirming..." : "Mint"}
         </Button>
-        {!hasEnoughBalance && (
+        {!!address && !hasEnoughBalance && (
           <p className="text-red-400">
-            <b>Insufficient balance:</b> You need some gas to mint an
-            NFT.
+            <b>Insufficient balance:</b> You need some gas to mint an NFT.
           </p>
         )}
         {error && (
