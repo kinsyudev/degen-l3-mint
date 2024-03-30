@@ -40,7 +40,7 @@ export default function Mint() {
     () => balance.data && balance.data.value > 0n,
     [balance.data],
   );
-  console.log(balance);
+
   const {
     data: hash,
     isPending,
@@ -114,7 +114,7 @@ export default function Mint() {
     }
   }, [hash, isConfirming, status]);
 
-  console.log("isPending", isPending);
+
   return (
     <Card className="bg-white/10 backdrop-blur-sm max-w-sm">
       <CardHeader>
