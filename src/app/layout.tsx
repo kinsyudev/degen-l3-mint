@@ -10,6 +10,7 @@ import banner from "~/media/ktools.png";
 import Header from "~/components/header";
 import { Toaster } from "~/components/ui/toaster";
 import { BackgroundBeams } from "~/components/background-beams";
+import ClientLayout from "~/app/client-layout";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -59,12 +60,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <div className="z-10 grid min-h-screen grid-cols-1 grid-rows-[auto_1fr] items-center justify-start gap-4 px-4 py-8 text-black">
-          <Header />
-          {children}
-        </div>
-        <BackgroundBeams />
-        <Toaster />
+        <ClientLayout initialState={initialState}>
+          <div className="grid min-h-screen grid-cols-1 grid-rows-[auto_1fr] items-center justify-center justify-items-center gap-4 px-4 py-8 text-black">
+            <Header />
+            {children}
+          </div>
+          <BackgroundBeams />
+          <Toaster />
+        </ClientLayout>
       </body>
     </html>
   );
